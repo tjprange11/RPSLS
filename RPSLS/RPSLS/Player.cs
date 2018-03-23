@@ -9,6 +9,7 @@ namespace RPSLS
     class Player
     {
         int score;
+        string choice;
 
         public Player()
         {
@@ -21,6 +22,14 @@ namespace RPSLS
         public int GetScore()
         {
             return score;
+        }
+        public void SetChoice(string choice)
+        {
+            this.choice = choice;
+        }
+        public string GetChoice()
+        {
+            return choice;
         }
     }
 }
