@@ -11,11 +11,11 @@ namespace RPSLS
         static void Main(string[] args)
         {
             List<string> choices = new List<string>() { "rock", "paper", "scissors", "lizard", "spock"};
-            Console.WriteLine("Welcome to RPSLS!");
-            Console.WriteLine("Rules:\nRock crushes Scissors \nScissors cuts Paper \nPaper covers Rock \nRock crushes Lizard \nLizard poisons Spock \nSpock smashes Scissors \nScissors decapitates Lizard \nLizard eats Paper \nPaper disproves Spock \nSpock vaporizes Rock");
+            Console.WriteLine("Welcome to RPSLS!\n");
+            Console.WriteLine("Rules:\n\tRock crushes Scissors \n\tScissors cuts Paper \n\tPaper covers Rock \n\tRock crushes Lizard \n\tLizard poisons Spock \n\tSpock smashes Scissors \n\tScissors decapitates Lizard \n\tLizard eats Paper \n\tPaper disproves Spock \n\tSpock vaporizes Rock");
             Console.WriteLine("Press Enter to continue!");
             Console.ReadLine();
-            int scoreToWin = GetBestOf();
+            int scoreToWin = (int)(GetBestOf()/2 + .5);
             Console.WriteLine("What is your name Player 1?");
             Human player1 = new Human(Console.ReadLine());
             Console.WriteLine("Do you have another player to play against? 'yes' or 'no'");
@@ -26,18 +26,84 @@ namespace RPSLS
                 Console.WriteLine("Do you have another player to play against? 'yes' or 'no'");
                 userInputString = Console.ReadLine().ToLower();
             }
-            if(userInputString.Equals("yes"))
+            if (userInputString.Equals("no"))
             {
                 CPU player2 = new CPU();
                 Console.WriteLine("Alright let's begin then!");
-                while(player1.GetScore() < 2 && player2.GetScore() < 2)
+                while (player1.GetScore() < scoreToWin && player2.GetScore() < scoreToWin)
+                {
+                    player1.SetChoice(AskForChoice(choices));
+                    player2.MakeChoice(choices);
+                    if(!CheckIfTie(player1, player2))
+                    {
+                        GetWinner(player1, player2);
+                    }
+                    else
+                    {
+                        Console.WriteLine("Wow its a Tie!");
+                    }
+                }
+                if (player1.GetScore() == scoreToWin)
+                {
+                    Console.WriteLine(player1.GetName() + "won the game!");
+                }
+                else
+                {
+                    Console.WriteLine("The CPU won the game!");
+                }
+                Console.ReadLine();
             }
-            
+            else
+            {
+                Console.WriteLine("What is your name Player 2?");
+                Human player2 = new Human(Console.ReadLine());
+                while (player1.GetScore() < scoreToWin && player2.GetScore() < scoreToWin)
+                {
+                    Console.WriteLine("\n" + player1.GetName() + ":");
+                    player1.SetChoice(AskForChoice(choices));
+                    Console.WriteLine("\n" + player2.GetName() +":");
+                    player2.SetChoice(AskForChoice(choices));
+                    if (!CheckIfTie(player1, player2))
+                    {
+                        GetWinner(player1, player2);
+                    }
+                    else
+                    {
+                        Console.WriteLine("Wow its a Tie!");
+                    }
+                }
+                if (player1.GetScore() == scoreToWin)
+                {
+                    Console.WriteLine(player1.GetName() + "won the game!");
+                }
+                else
+                {
+                    Console.WriteLine(player2.GetName() + "won the game!");
+                }
+                Console.ReadLine();
+            }
         }
-        public string AskForChoice()
+        public static string AskForChoice(List<string> choices)
         {
             Console.WriteLine("Please choose : 'rock' , 'paper' , 'scissors' , 'lizard' , or 'spock'");
-            return Console.ReadLine().ToLower();
+            string choice = Console.ReadLine().ToLower();
+            if (validateChoice(choice, choices))
+            {
+                return choice;
+            }
+            Console.WriteLine("Invalid Entry!");
+            return AskForChoice(choices);
+        }
+        public static bool validateChoice(string userInput, List<string> choices)
+        {
+            foreach (string choice in choices)
+            {
+                if (userInput.Equals(choice))
+                {
+                    return true;
+                }
+            }
+            return false;
         }
         public static int GetBestOf()
         {
@@ -46,19 +112,19 @@ namespace RPSLS
             int bestOf;
             if (int.TryParse(userInput, out bestOf))
             {
-                return bestOf;
+                if (validateOdd(bestOf))
+                {
+                    return bestOf;
+                }
             }
             Console.WriteLine("Invalid Entry!");
             return GetBestOf();
         }
-        public bool validateChoice(string userInput, List<string> choices)
+        public static bool validateOdd(int num)
         {
-            foreach(string choice in choices)
+            if (num % 2 == 1)
             {
-                if(userInput.Equals(choice))
-                {
-                    return true;
-                }
+                return true;
             }
             return false;
         }
@@ -70,17 +136,9 @@ namespace RPSLS
             }
             return false;
         }
-        public bool validateOdd(int num)
+        public static bool CheckIfTie(Player player1, Player player2)
         {
-            if(num%2 == 1)
-            {
-                return true;
-            }
-            return false;
-        }
-        public bool CheckIfTie(string player1, string player2)
-        {
-            if(player1.Equals(player2))
+            if(player1.GetChoice().Equals(player2.GetChoice()))
             {
                 return true;
             }
@@ -204,5 +262,6 @@ namespace RPSLS
                 }
             }
         }
+
     }
 }
