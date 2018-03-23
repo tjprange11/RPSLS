@@ -11,12 +11,45 @@ namespace RPSLS
         static void Main(string[] args)
         {
             List<string> choices = new List<string>() { "rock", "paper", "scissors", "lizard", "spock"};
+            Console.WriteLine("Welcome to RPSLS!");
+            Console.WriteLine("Rules:\nRock crushes Scissors \nScissors cuts Paper \nPaper covers Rock \nRock crushes Lizard \nLizard poisons Spock \nSpock smashes Scissors \nScissors decapitates Lizard \nLizard eats Paper \nPaper disproves Spock \nSpock vaporizes Rock");
+            Console.WriteLine("Press Enter to continue!");
+            Console.ReadLine();
+            int scoreToWin = GetBestOf();
+            Console.WriteLine("What is your name Player 1?");
+            Human player1 = new Human(Console.ReadLine());
+            Console.WriteLine("Do you have another player to play against? 'yes' or 'no'");
+            string userInputString = Console.ReadLine().ToLower();
+            while(!validateYesNo(userInputString))
+            {
+                Console.WriteLine("Invalid Answer!");
+                Console.WriteLine("Do you have another player to play against? 'yes' or 'no'");
+                userInputString = Console.ReadLine().ToLower();
+            }
+            if(userInputString.Equals("yes"))
+            {
+                CPU player2 = new CPU();
+                Console.WriteLine("Alright let's begin then!");
+                while(player1.GetScore() < 2 && player2.GetScore() < 2)
+            }
             
         }
         public string AskForChoice()
         {
             Console.WriteLine("Please choose : 'rock' , 'paper' , 'scissors' , 'lizard' , or 'spock'");
             return Console.ReadLine().ToLower();
+        }
+        public static int GetBestOf()
+        {
+            Console.WriteLine("How many games would you like to play best of? Ex. Best of 7 - First to 4 wins");
+            string userInput = Console.ReadLine();
+            int bestOf;
+            if (int.TryParse(userInput, out bestOf))
+            {
+                return bestOf;
+            }
+            Console.WriteLine("Invalid Entry!");
+            return GetBestOf();
         }
         public bool validateChoice(string userInput, List<string> choices)
         {
@@ -26,6 +59,22 @@ namespace RPSLS
                 {
                     return true;
                 }
+            }
+            return false;
+        }
+        public static bool validateYesNo(string userInput)
+        {
+            if(userInput.Equals("yes") || userInput.Equals("no"))
+            {
+                return true;
+            }
+            return false;
+        }
+        public bool validateOdd(int num)
+        {
+            if(num%2 == 1)
+            {
+                return true;
             }
             return false;
         }
