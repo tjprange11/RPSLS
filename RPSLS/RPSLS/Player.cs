@@ -8,5 +8,19 @@ namespace RPSLS
 {
     class Player
     {
+        int score;
+
+        public Player()
+        {
+            score = 0;
+        }
+        public void IncrementScore()
+        {
+            score++;
+        }
+        public int GetScore()
+        {
+            return score;
+        }
     }
 }
