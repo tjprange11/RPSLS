@@ -11,13 +11,12 @@ namespace RPSLS
         static void Main(string[] args)
         {
             List<string> choices = new List<string>() { "rock", "paper", "scissors", "lizard", "spock"};
-            Console.WriteLine("Welcome to RPSLS!\n");
-            Console.WriteLine("Rules:\n\tRock crushes Scissors \n\tScissors cuts Paper \n\tPaper covers Rock \n\tRock crushes Lizard \n\tLizard poisons Spock \n\tSpock smashes Scissors \n\tScissors decapitates Lizard \n\tLizard eats Paper \n\tPaper disproves Spock \n\tSpock vaporizes Rock");
-            Console.WriteLine("Press Enter to continue!");
-            Console.ReadLine();
+            displayRules();
             int scoreToWin = (int)(GetBestOf()/2 + .5);
+            Console.Clear();
             Console.WriteLine("What is your name Player 1?");
             Human player1 = new Human(Console.ReadLine());
+            Console.Clear();
             Console.WriteLine("Do you have another player to play against? 'yes' or 'no'");
             string userInputString = Console.ReadLine().ToLower();
             while(!validateYesNo(userInputString))
@@ -25,27 +24,30 @@ namespace RPSLS
                 Console.WriteLine("Invalid Answer!");
                 Console.WriteLine("Do you have another player to play against? 'yes' or 'no'");
                 userInputString = Console.ReadLine().ToLower();
+                Console.Clear();
             }
             if (userInputString.Equals("no"))
             {
                 CPU player2 = new CPU();
-                Console.WriteLine("Alright let's begin then!");
+                Console.Clear();
                 while (player1.GetScore() < scoreToWin && player2.GetScore() < scoreToWin)
                 {
                     player1.SetChoice(AskForChoice(choices));
                     player2.MakeChoice(choices);
                     if(!CheckIfTie(player1, player2))
                     {
-                        GetWinner(player1, player2);
+                        GetWinner(player1, player2).IncrementScore();
                     }
                     else
                     {
                         Console.WriteLine("Wow its a Tie!");
                     }
+                    Console.WriteLine("\n Please press Enter to Continue!");
+                    Console.ReadLine();
                 }
                 if (player1.GetScore() == scoreToWin)
                 {
-                    Console.WriteLine(player1.GetName() + "won the game!");
+                    Console.WriteLine(player1.GetName() + " won the game!");
                 }
                 else
                 {
@@ -57,28 +59,33 @@ namespace RPSLS
             {
                 Console.WriteLine("What is your name Player 2?");
                 Human player2 = new Human(Console.ReadLine());
+                Console.Clear();
                 while (player1.GetScore() < scoreToWin && player2.GetScore() < scoreToWin)
                 {
                     Console.WriteLine("\n" + player1.GetName() + ":");
                     player1.SetChoice(AskForChoice(choices));
+                    Console.Clear();
                     Console.WriteLine("\n" + player2.GetName() +":");
                     player2.SetChoice(AskForChoice(choices));
+                    Console.Clear();
                     if (!CheckIfTie(player1, player2))
                     {
-                        GetWinner(player1, player2);
+                        GetWinner(player1, player2).IncrementScore();
                     }
                     else
                     {
                         Console.WriteLine("Wow its a Tie!");
                     }
+                    Console.WriteLine("\n Please press Enter to Continue!");
+                    Console.ReadLine();
                 }
                 if (player1.GetScore() == scoreToWin)
                 {
-                    Console.WriteLine(player1.GetName() + "won the game!");
+                    Console.WriteLine(player1.GetName() + " won the game!");
                 }
                 else
                 {
-                    Console.WriteLine(player2.GetName() + "won the game!");
+                    Console.WriteLine(player2.GetName() + " won the game!");
                 }
                 Console.ReadLine();
             }
@@ -87,6 +94,7 @@ namespace RPSLS
         {
             Console.WriteLine("Please choose : 'rock' , 'paper' , 'scissors' , 'lizard' , or 'spock'");
             string choice = Console.ReadLine().ToLower();
+            Console.Clear();
             if (validateChoice(choice, choices))
             {
                 return choice;
@@ -117,6 +125,7 @@ namespace RPSLS
                     return bestOf;
                 }
             }
+            Console.Clear();
             Console.WriteLine("Invalid Entry!");
             return GetBestOf();
         }
@@ -262,6 +271,13 @@ namespace RPSLS
                 }
             }
         }
-
+        public static void displayRules()
+        {
+            Console.WriteLine("Welcome to RPSLS!\n");
+            Console.WriteLine("Rules:\n\tRock crushes Scissors \n\tScissors cuts Paper \n\tPaper covers Rock \n\tRock crushes Lizard \n\tLizard poisons Spock \n\tSpock smashes Scissors \n\tScissors decapitates Lizard \n\tLizard eats Paper \n\tPaper disproves Spock \n\tSpock vaporizes Rock");
+            Console.WriteLine("Press Enter to continue!");
+            Console.ReadLine();
+            Console.Clear();
+        }
     }
 }
