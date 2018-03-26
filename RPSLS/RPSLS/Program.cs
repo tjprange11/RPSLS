@@ -12,14 +12,15 @@ namespace RPSLS
         {
             List<string> choices = new List<string>() { "rock", "paper", "scissors", "lizard", "spock"};
             displayRules();
-            int scoreToWin = (int)(GetBestOf()/2 + .5);
+            int scoreToWin = (int)(GetBestOf() / 2.0 + .5);
             Console.Clear();
             Console.WriteLine("What is your name Player 1?");
             Human player1 = new Human(Console.ReadLine());
             Console.Clear();
             Console.WriteLine("Do you have another player to play against? 'yes' or 'no'");
             string userInputString = Console.ReadLine().ToLower();
-            while(!validateYesNo(userInputString))
+            Console.Clear();
+            while (!validateYesNo(userInputString))
             {
                 Console.WriteLine("Invalid Answer!");
                 Console.WriteLine("Do you have another player to play against? 'yes' or 'no'");
@@ -29,7 +30,6 @@ namespace RPSLS
             if (userInputString.Equals("no"))
             {
                 CPU player2 = new CPU();
-                Console.Clear();
                 while (player1.GetScore() < scoreToWin && player2.GetScore() < scoreToWin)
                 {
                     player1.SetChoice(AskForChoice(choices));
@@ -44,6 +44,7 @@ namespace RPSLS
                     }
                     Console.WriteLine("\n Please press Enter to Continue!");
                     Console.ReadLine();
+                    Console.Clear();
                 }
                 if (player1.GetScore() == scoreToWin)
                 {
@@ -78,6 +79,7 @@ namespace RPSLS
                     }
                     Console.WriteLine("\n Please press Enter to Continue!");
                     Console.ReadLine();
+                    Console.Clear();
                 }
                 if (player1.GetScore() == scoreToWin)
                 {
